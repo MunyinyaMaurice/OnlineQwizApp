@@ -1,8 +1,10 @@
 package com.backend.online_qwiz.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jdk.jfr.Timestamp;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.util.Date;
 
@@ -19,17 +21,24 @@ public class QuizResult {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
+    @JsonIgnore
     private User user;
 
     @ManyToOne
     @JoinColumn(name = "quiz_question_id", nullable = false)
+    @JsonIgnore
     private QuizQuestion quizQuestion;
 
     @Column(nullable = false)
     private String selectedOption;
 
+    @ManyToOne
+    @JoinColumn(name = "quiz_id")
+    @JsonIgnore
+    private Quiz quiz;
+
     @Column(nullable = false)
-    @Timestamp
+    @CreationTimestamp
     private Date submissionTime;
 
 }

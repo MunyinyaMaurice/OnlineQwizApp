@@ -1,5 +1,6 @@
 package com.backend.online_qwiz.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -17,6 +18,7 @@ public class QuizQuestion {
 
     @ManyToOne
     @JoinColumn(name = "quiz_id", nullable = false)
+    @JsonIgnore
     private Quiz quiz;
 
     @Column(nullable = false)
@@ -25,12 +27,14 @@ public class QuizQuestion {
     @ElementCollection
     @CollectionTable(name = "question_options", joinColumns = @JoinColumn(name = "question_id"))
     @Column(name = "option")
+    @JsonIgnore
     private List<String> options;
 
     @Column(nullable = false)
     private int correctOptionIndex;
 
     @OneToMany(mappedBy = "quizQuestion")
+    @JsonIgnore
     private List<QuizResult> quizResults;
 
 }

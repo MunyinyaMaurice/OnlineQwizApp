@@ -1,5 +1,6 @@
 package com.backend.online_qwiz.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import java.util.*;
@@ -18,5 +19,6 @@ public class Quiz {
     private String title;
 
     @OneToMany(mappedBy = "quiz")
+    @JsonIgnore
     private List<QuizQuestion> questions;
 }
