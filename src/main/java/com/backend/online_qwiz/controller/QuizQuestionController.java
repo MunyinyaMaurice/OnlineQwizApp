@@ -39,7 +39,7 @@ public class QuizQuestionController {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
 
-        @GetMapping
+        @GetMapping("/quiz/all_questions")
         public ResponseEntity<List<QuizQuestion>> getAllQuizQuestions() {
             List<QuizQuestion> quizQuestions = quizQuestionService.getAllQuizQuestions();
             return new ResponseEntity<>(quizQuestions, HttpStatus.OK);

@@ -53,5 +53,12 @@ public class QuizQuestionService {
 
         return quizQuestionRepository.findByQuizId(quizId);
     }
+    
+    public List<String> getQuestionOptions(Long questionId) {
+        QuizQuestion quizQuestion = quizQuestionRepository.findById(questionId)
+                .orElseThrow(() -> new EntityNotFoundException("Quiz question not found with ID: " + questionId));
+
+        return quizQuestion.getOptions();
+    }
 
 }

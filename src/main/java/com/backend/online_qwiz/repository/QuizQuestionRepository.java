@@ -13,4 +13,5 @@ import java.util.Optional;
 public interface QuizQuestionRepository extends JpaRepository<QuizQuestion,Long> {
 //    List<QuizQuestion> findByQuiz (Long quizId);
     List<QuizQuestion> findByQuizId(Long quizId);
+    // List<QuizQuestion> findByQuizId(Long quizId)
 }
