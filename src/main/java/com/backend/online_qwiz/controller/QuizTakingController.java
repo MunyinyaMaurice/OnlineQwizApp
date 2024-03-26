@@ -15,6 +15,7 @@ import java.util.Map;
 public class QuizTakingController {
     private final QuizTakingServiceInterf quizTakingService;
 
+
     @PostMapping("/start/{quizId}")
     public ResponseEntity<String> startQuiz(@PathVariable Long quizId) {
         // Initialize answeredQuestions with an empty map
@@ -26,7 +27,6 @@ public class QuizTakingController {
     public ResponseEntity<String> submitQuiz(@PathVariable Long quizId, @RequestBody Map<Long, String> answeredQuestions) {
         return quizTakingService.startOrSubmitQuiz(quizId, answeredQuestions, false);
     }
-
     @GetMapping("/end/{quizId}")
     public ResponseEntity<String> endQuiz(@PathVariable Long quizId, @RequestBody Map<Long, String> answeredQuestions) {
         return quizTakingService.startOrSubmitQuiz(quizId, answeredQuestions, true);

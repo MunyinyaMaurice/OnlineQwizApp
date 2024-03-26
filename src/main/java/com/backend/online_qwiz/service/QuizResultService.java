@@ -5,6 +5,7 @@ import com.backend.online_qwiz.model.QuizQuestion;
 import com.backend.online_qwiz.model.QuizResult;
 import com.backend.online_qwiz.model.User;
 import com.backend.online_qwiz.repository.QuizQuestionRepository;
+import com.backend.online_qwiz.repository.QuizRepository;
 import com.backend.online_qwiz.repository.QuizResultRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,7 @@ import static com.backend.online_qwiz.secuirity.config.ApplicationConfig.getCurr
 public class QuizResultService {
     private final QuizResultRepository quizResultRepository;
     private final QuizQuestionRepository quizQuestionRepository;
+    private final QuizRepository quizRepository;
 
 //    public QuizResult submitQuizResult(Long questionId, String selectedOption) {
 //        QuizQuestion quizQuestion = quizQuestionRepository.findById(questionId)
@@ -37,19 +39,25 @@ public void submitQuizResult(Long quizId, Map<Long, String> answeredQuestions) {
         Long questionId = entry.getKey();
         String selectedOption = entry.getValue();
         // Submit each quiz result individually
-        submitQuizResult(questionId, selectedOption);
+        submitQuizResult(quizId, questionId, selectedOption);
     }
 }
 
-    private QuizResult submitQuizResult(Long questionId, String selectedOption) {
+    private QuizResult submitQuizResult(Long quizId, Long questionId, String selectedOption) {
         QuizQuestion quizQuestion = quizQuestionRepository.findById(questionId)
                 .orElseThrow(() -> new EntityNotFoundException("Quiz question not found with ID: " + questionId));
+        // Retrieve the quiz entity by quizId
+        Quiz quiz = quizRepository.findById(quizId)
+                .orElseThrow(() -> new EntityNotFoundException("Quiz not found with ID: " + quizId));
+        // Create and save the quiz result
         QuizResult quizResult = new QuizResult();
+        quizResult.setQuiz(quiz);
         quizResult.setQuizQuestion(quizQuestion);
         quizResult.setUser(getCurrentUser());
         quizResult.setSelectedOption(selectedOption);
         return quizResultRepository.save(quizResult);
     }
+
     public List<QuizResult> getQuizResultsByUserAndQuiz(Quiz quizId) {
         User currentUser = getCurrentUser();
         return quizResultRepository.findByUserAndQuiz(currentUser, quizId);

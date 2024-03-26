@@ -14,7 +14,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v2/auth/quiz-questions")
+@RequestMapping("/api/v2/auth")
 public class QuizQuestionController {
         private final QuizQuestionService quizQuestionService;
         private final QuizService quizService;
@@ -45,10 +45,10 @@ public class QuizQuestionController {
             return new ResponseEntity<>(quizQuestions, HttpStatus.OK);
         }
 
-//        @GetMapping("/quiz/{quizId}")
-//        public ResponseEntity<List<QuizQuestion>> getQuizQuestionsByQuiz(@PathVariable Long quizId) {
-//            // Assuming you have a service method to fetch quiz questions by quiz ID
-//            List<QuizQuestion> quizQuestions = quizQuestionService.getQuizQuestionsByQuizId(quizId);
-//            return new ResponseEntity<>(quizQuestions, HttpStatus.OK);
-//        }
+       @GetMapping("/quiz/{quizId}")
+       public ResponseEntity<List<QuizQuestion>> getQuizQuestionsByQuiz(@PathVariable Long quizId) {
+           // Assuming you have a service method to fetch quiz questions by quiz ID
+           List<QuizQuestion> quizQuestions = quizQuestionService.getQuizQuestionsByQuizId(quizId);
+           return new ResponseEntity<>(quizQuestions, HttpStatus.OK);
+       }
 }

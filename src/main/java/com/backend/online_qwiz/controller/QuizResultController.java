@@ -17,15 +17,6 @@ import static com.backend.online_qwiz.secuirity.config.ApplicationConfig.getCurr
 public class QuizResultController {
     private final QuizResultService quizResultService;
 
-//    @PostMapping("/{questionId}")
-//    public ResponseEntity<QuizResult> submitQuizResult(
-//            @PathVariable Long questionId,
-//            @RequestBody QuizResultDto quizResultDto) {
-////        Integer userId = getCurrentUserId();
-////        Long userIdLong = userId.longValue();
-//        QuizResult submittedResult = quizResultService.submitQuizResult( questionId, quizResultDto.getSelectedOption());
-//        return new ResponseEntity<>(submittedResult, HttpStatus.CREATED);
-//    }
 
     @GetMapping("/user_result")
     public ResponseEntity<List<QuizResult>> getQuizResultsByUser() {

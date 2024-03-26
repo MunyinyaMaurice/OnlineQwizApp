@@ -51,7 +51,7 @@ public class QuizQuestionService {
                 .orElseThrow(() -> new EntityNotFoundException("Quiz not found with ID: " + quizId));
 //        Quiz quizz = quizzes.get(0); // Assuming there's only one quiz with a given title
 
-        return quizQuestionRepository.findByQuiz(quiz);
+        return quizQuestionRepository.findByQuizId(quizId);
     }
 
 }

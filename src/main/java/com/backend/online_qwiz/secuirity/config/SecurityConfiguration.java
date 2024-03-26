@@ -72,8 +72,8 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity http, AccessDeniedHandler accessDeniedHandler) throws Exception {
         http.csrf().disable()
                 .authorizeHttpRequests(req -> req
-                        .requestMatchers(WHITE_LIST_URL)
-//                .requestMatchers("/api/v1/auth/**")
+//                        .requestMatchers(WHITE_LIST_URL)
+                .requestMatchers("/api/v1/auth/**","/api/v2/auth/**")
                         .permitAll()
 //                        .requestMatchers(LIST_FOR_LOGGED_IN_URL).hasAnyRole(ADMIN.name(), STUDENT.name(), STUDENT.name())
 //                        .requestMatchers(ADMIN_SELLER_LIST_URL).hasAnyRole(ADMIN.name(), STUDENT.name())
