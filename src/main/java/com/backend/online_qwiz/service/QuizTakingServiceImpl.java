@@ -27,21 +27,62 @@ public class QuizTakingServiceImpl implements QuizTakingServiceInterf {
 //    private final Timer timer;
 
     @Override
-    public ResponseEntity<String> startOrSubmitQuiz(Long quizId, Map<Long, String> answeredQuestions, boolean timerExpired) {
+    // public ResponseEntity<String> startOrSubmitQuiz(Long quizId, Map<Long, String> answeredQuestions, boolean timerExpired) {
+    //     // If timer has expired, end the quiz
+    //     if (timerExpired) {
+    //         return endQuiz(quizId, answeredQuestions);
+    //     }
+
+    //     // If no questions answered yet, start the quiz
+    //     if (answeredQuestions.isEmpty()) {
+    //         startQuizTimer(quizId);
+    //         return new ResponseEntity<>("Quiz started! You have 10 minutes to complete it.", HttpStatus.OK);
+    //     }
+
+    //     // Check if all questions have been answered
+    //     return checkCompletionAndEndQuiz(quizId, answeredQuestions);
+    // }
+    public ResponseEntity<String> startOrSubmitQuiz(Long quizId, Map<Long, String> answeredQuestions, boolean timerExpired, Integer currentQuestionIndex) {
         // If timer has expired, end the quiz
         if (timerExpired) {
             return endQuiz(quizId, answeredQuestions);
         }
-
-        // If no questions answered yet, start the quiz
-        if (answeredQuestions.isEmpty()) {
+    
+        // If no questions answered yet, start the quiz by fetching the first question
+        if (currentQuestionIndex == null || currentQuestionIndex < 0) {
             startQuizTimer(quizId);
-            return new ResponseEntity<>("Quiz started! You have 10 minutes to complete it.", HttpStatus.OK);
+            currentQuestionIndex = 0;
+            String questionOptions = getNextQuestionOptions(quizId, currentQuestionIndex);
+            return new ResponseEntity<>(questionOptions, HttpStatus.OK);
         }
-
+    
         // Check if all questions have been answered
-        return checkCompletionAndEndQuiz(quizId, answeredQuestions);
+        if (answeredQuestions.size() == currentQuestionIndex + 1) {
+            // All questions answered, end the quiz
+            return endQuiz(quizId, answeredQuestions);
+        }
+    
+        // Fetch the next question options
+        currentQuestionIndex++;
+        String questionOptions = getNextQuestionOptions(quizId, currentQuestionIndex);
+        return new ResponseEntity<>(questionOptions, HttpStatus.OK);
     }
+    
+    private String getNextQuestionOptions(Long quizId, Integer currentQuestionIndex) {
+        List<QuizQuestion> quizQuestions = quizQuestionService.getQuizQuestionsByQuizId(quizId);
+        if (currentQuestionIndex >= quizQuestions.size()) {
+            throw new IllegalArgumentException("No more questions available.");
+        }
+        QuizQuestion currentQuestion = quizQuestions.get(currentQuestionIndex);
+        List<String> options = quizQuestionService.getQuestionOptions(currentQuestion.getId());
+        StringBuilder response = new StringBuilder();
+        response.append("Question: ").append(currentQuestion.getQuestionText()).append("\n");
+        for (int i = 0; i < options.size(); i++) {
+            response.append(i + 1).append(". ").append(options.get(i)).append("\n");
+        }
+        return response.toString();
+    }
+    
 
     private ResponseEntity<String> checkCompletionAndEndQuiz(Long quizId, Map<Long, String> answeredQuestions) {
         List<QuizQuestion> quizQuestions = quizQuestionService.getQuizQuestionsByQuizId(quizId);
@@ -53,26 +94,6 @@ public class QuizTakingServiceImpl implements QuizTakingServiceInterf {
             return new ResponseEntity<>("Quiz cannot be ended. Please answer all questions.", HttpStatus.OK);
         }
     }
-//    public String endQuiz(Long quizId, Map<Long, String> answeredQuestions) {
-//        List<QuizQuestion> quizQuestions = quizQuestionService.getQuizQuestionsByQuizId(quizId);
-//
-//        // Check if all questions have been answered
-//        if (answeredQuestions.size() == quizQuestions.size()) {
-//            // Stop the timer if it's running
-//            timer.cancel(); // Assuming timer is an instance of java.util.Timer
-//
-//            // Calculate the score
-//            int score = quizResultService.calculateScore(answeredQuestions);
-//
-//            // Store the quiz result
-//            quizResultService.storeQuizResult(quizId, answeredQuestions);
-//
-//            return "Quiz ended. Your score is: " + score;
-//        } else {
-//            return "Quiz cannot be ended. Please answer all questions.";
-//        }
-//    }
-
     private ResponseEntity<String> endQuiz(Long quizId, Map<Long, String> answeredQuestions) {
         // Stop the timer
         timer.cancel(); // Assuming timer is an instance of java.util.Timer

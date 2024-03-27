@@ -20,21 +20,31 @@ public class QuizTakingController {
     private final QuizQuestionService quizQuestionService;
 
 
+    // @PostMapping("/start/{quizId}")
+    // public ResponseEntity<String> startQuiz(@PathVariable Long quizId) {
+    //     // Initialize answeredQuestions with an empty map
+    //     Map<Long, String> answeredQuestions = new HashMap<>();
+    //     return quizTakingServiceImpl.startOrSubmitQuiz(quizId, answeredQuestions, false);
+    // }
+    
     @PostMapping("/start/{quizId}")
-    public ResponseEntity<String> startQuiz(@PathVariable Long quizId) {
-        // Initialize answeredQuestions with an empty map
-        Map<Long, String> answeredQuestions = new HashMap<>();
-        return quizTakingServiceImpl.startOrSubmitQuiz(quizId, answeredQuestions, false);
+    public ResponseEntity<String> startOrSubmitQuiz(
+            @PathVariable Long quizId,
+            @RequestBody Map<Long, String> answeredQuestions,
+            @RequestParam(required = false) boolean timerExpired,
+            @RequestParam(required = false) Integer currentQuestionIndex) {
+        return quizTakingServiceImpl.startOrSubmitQuiz(quizId, answeredQuestions, timerExpired, currentQuestionIndex);
     }
 
-    @PostMapping("/submit/{quizId}")
-    public ResponseEntity<String> submitQuiz(@PathVariable Long quizId, @RequestBody Map<Long, String> answeredQuestions) {
-        return quizTakingServiceImpl.startOrSubmitQuiz(quizId, answeredQuestions, false);
-    }
-    @GetMapping("/end/{quizId}")
-    public ResponseEntity<String> endQuiz(@PathVariable Long quizId, @RequestBody Map<Long, String> answeredQuestions) {
-        return quizTakingServiceImpl.startOrSubmitQuiz(quizId, answeredQuestions, true);
-    }
+
+    // @PostMapping("/submit/{quizId}")
+    // public ResponseEntity<String> submitQuiz(@PathVariable Long quizId, @RequestBody Map<Long, String> answeredQuestions) {
+    //     return quizTakingServiceImpl.startOrSubmitQuiz(quizId, answeredQuestions, false);
+    // }
+    // @GetMapping("/end/{quizId}")
+    // public ResponseEntity<String> endQuiz(@PathVariable Long quizId, @RequestBody Map<Long, String> answeredQuestions) {
+    //     return quizTakingServiceImpl.startOrSubmitQuiz(quizId, answeredQuestions, true);
+    // }
 
     @GetMapping("/options/{questionId}")
     public ResponseEntity<List<String>> getQuestionOptions(@PathVariable Long questionId) {

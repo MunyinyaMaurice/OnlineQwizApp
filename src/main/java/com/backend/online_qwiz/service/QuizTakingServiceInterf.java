@@ -12,5 +12,5 @@ public interface QuizTakingServiceInterf {
      * @param timerExpired Indicates whether the quiz timer has expired.
      * @return A ResponseEntity with a message indicating the result of the operation.
      */
-    ResponseEntity<String> startOrSubmitQuiz(Long quizId, Map<Long, String> answeredQuestions, boolean timerExpired);
+    ResponseEntity<String> startOrSubmitQuiz(Long quizId, Map<Long, String> answeredQuestions, boolean timerExpired,  Integer currentQuestionIndex);
 }
