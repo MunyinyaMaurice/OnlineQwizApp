@@ -17,7 +17,7 @@ services:
     image: 'online_qwiz:latest'
     build:
       context: .
-    container_name: online-qwiz-app
+    container_name: app
     depends_on:
       - db
     environment:
