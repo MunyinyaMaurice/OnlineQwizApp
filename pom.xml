@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.backend</groupId>
 	<artifactId>online_qwiz</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.1.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>online_qwiz</name>
 	<description>online qwiz restful api in spring</description>
