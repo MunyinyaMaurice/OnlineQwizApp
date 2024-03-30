@@ -19,7 +19,7 @@
 #CMD ["java", "-jar", "/online_quiz.jar"]
 
 
-FROM maven:3.8.4-jdk-alpine AS build
+FROM maven:latest AS build
 
 COPY pom.xml .
 RUN mvn package
