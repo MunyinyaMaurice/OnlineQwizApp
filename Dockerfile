@@ -31,7 +31,7 @@
 #EXPOSE 23901
 #
 #ENTRYPOINT ["java", "-jar", "app.jar"]
-#
+
 #FROM maven:3.8.5-openjdk-17 AS build
 FROM maven:3-openjdk-17 AS build
 COPY . .
