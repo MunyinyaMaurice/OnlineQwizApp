@@ -19,15 +19,25 @@
 #CMD ["java", "-jar", "/online_quiz.jar"]
 
 
-FROM maven:latest AS build
+#FROM maven:latest AS build
+#
+#COPY pom.xml .
+#RUN mvn package
+#
+#FROM openjdk:17-jdk-slim
+#
+#COPY --from=build target/online_qwiz-0.1.0-SNAPSHOT.jar app.jar
+#
+#EXPOSE 23901
+#
+#ENTRYPOINT ["java", "-jar", "app.jar"]
 
-COPY pom.xml .
-RUN mvn package
+#FROM maven:3.8.5-openjdk-17 AS build
+FROM maven:3-openjdk-17 AS build
+COPY . .
+RUN mvn clean package -DskipTests
 
-FROM openjdk:17-jdk-slim
-
-COPY --from=build target/online_qwiz-0.1.0-SNAPSHOT.jar app.jar
-
+FROM openjdk:17.0.1-jdk-slim
+COPY --from=build /target/online_qwiz-0.1.0-SNAPSHOT.jar quiz.jar
 EXPOSE 23901
-
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENTRYPOINT ["java","-jar","quiz.jar"]
