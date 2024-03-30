@@ -1,32 +1,32 @@
-services:
-  db:
-    image: mysql:5.7
-    restart: always
-    environment:
-      MYSQL_DATABASE: 'online_quiz'
-      MYSQL_PASSWORD: 'Db123@'
-      MYSQL_ROOT_PASSWORD: 'Db123@'
-    ports:
-      - '3310:3310'
-    expose:
-      - '3306'
-    volumes:
-      - my-db:/var/lib/mysql
-
-  app:
-    image: 'online_qwiz:latest'
-    build:
-      context: .
-    container_name: quiz
-    depends_on:
-      - db
-    environment:
-      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/online_quiz?useSSL=false&useUnicode=true&characterEncoding=UTF-8
-      - SPRING_DATASOURCE_USERNAME=root
-      - SPRING_DATASOURCE_PASSWORD=Db123@
-      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
-    ports:
-      - "23901:23901"
-volumes:
-  my-db:
-
+#services:
+#  db:
+#    image: mysql:5.7
+#    restart: always
+#    environment:
+#      MYSQL_DATABASE: 'online_quiz'
+#      MYSQL_PASSWORD: 'Db123@'
+#      MYSQL_ROOT_PASSWORD: 'Db123@'
+#    ports:
+#      - '3310:3310'
+#    expose:
+#      - '3306'
+#    volumes:
+#      - my-db:/var/lib/mysql
+#
+#  app:
+#    image: 'online_qwiz:latest'
+#    build:
+#      context: .
+#    container_name: quiz
+#    depends_on:
+#      - db
+#    environment:
+#      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/online_quiz?useSSL=false&useUnicode=true&characterEncoding=UTF-8
+#      - SPRING_DATASOURCE_USERNAME=root
+#      - SPRING_DATASOURCE_PASSWORD=Db123@
+#      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+#    ports:
+#      - "23901:23901"
+#volumes:
+#  my-db:
+#
