@@ -38,8 +38,8 @@ public class QuizResultController {
         List<QuizResult> quizResults = quizResultService.getAllQuizResults();
         return new ResponseEntity<>(quizResults, HttpStatus.OK);
     }
-    @GetMapping("/result")
-    public ResponseEntity<?> getLastQuizResultByUserAndQuiz(@RequestParam Long quizId ) {
+    @GetMapping("/result/{quizId}")
+    public ResponseEntity<?> getLastQuizResultByUserAndQuiz(@PathVariable Long quizId ) {
         return quizResultService.getLastQuizResultByUserAndQuiz(quizId);
         // return new ResponseEntity<>(quizResultService.getLastQuizResultByUserAndQuiz(quizId), HttpStatus.OK);
     }

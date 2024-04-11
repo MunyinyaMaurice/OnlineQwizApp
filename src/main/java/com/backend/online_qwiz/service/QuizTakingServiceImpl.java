@@ -37,7 +37,7 @@ public class QuizTakingServiceImpl implements QuizTakingServiceInterf {
             questionData.put("question", currentQuestion.getQuestionText());
             questionData.put("options", options);
 
-            quizData.put("Index " + (currentQuestionIndex + 1), questionData);
+            quizData.put(""+(currentQuestionIndex + 1), questionData);
         }
 
         return ResponseEntity.ok(quizData);

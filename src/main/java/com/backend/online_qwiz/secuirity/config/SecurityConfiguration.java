@@ -76,6 +76,7 @@ public class SecurityConfiguration {
                 .requestMatchers("/api/v1/auth/**","/api/v2/questions/**","/api/v2/auth/**", "/v2/api-docs",
                 "/api/v2/auth/questions/{quizId}",
                 "/api/v2/auth/submit/{quizId}",
+                "/api/v2/auth/quiz-results/result/{quizId}",
                 "/api/v2/auth/end/{quizId}",
                 "/v3/api-docs",
                 "/v3/api-docs/**",
