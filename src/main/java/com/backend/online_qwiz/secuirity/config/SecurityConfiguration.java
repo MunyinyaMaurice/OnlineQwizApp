@@ -73,7 +73,19 @@ public class SecurityConfiguration {
         http.csrf().disable()
                 .authorizeHttpRequests(req -> req
 //                        .requestMatchers(WHITE_LIST_URL)
-                .requestMatchers("/api/v1/auth/**","/api/v2/auth/**")
+                .requestMatchers("/api/v1/auth/**","/api/v2/questions/**","/api/v2/auth/**", "/v2/api-docs",
+                "/api/v2/auth/questions/{quizId}",
+                "/api/v2/auth/submit/{quizId}",
+                "/api/v2/auth/end/{quizId}",
+                "/v3/api-docs",
+                "/v3/api-docs/**",
+                "/swagger-resources",
+                "/swagger-resources/**",
+                "/configuration/ui",
+                "/configuration/security",
+                "/swagger-ui/**",
+                "/webjars/**",
+                "/swagger-ui.html")
                         .permitAll()
 //                        .requestMatchers(LIST_FOR_LOGGED_IN_URL).hasAnyRole(ADMIN.name(), STUDENT.name(), STUDENT.name())
 //                        .requestMatchers(ADMIN_SELLER_LIST_URL).hasAnyRole(ADMIN.name(), STUDENT.name())

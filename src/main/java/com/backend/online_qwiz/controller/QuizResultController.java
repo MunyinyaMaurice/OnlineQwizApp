@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 import static com.backend.online_qwiz.secuirity.config.ApplicationConfig.getCurrentUserId;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @RestController
 @RequestMapping("/api/v2/auth/quiz-results")
@@ -35,4 +38,10 @@ public class QuizResultController {
         List<QuizResult> quizResults = quizResultService.getAllQuizResults();
         return new ResponseEntity<>(quizResults, HttpStatus.OK);
     }
+    @GetMapping("/result")
+    public ResponseEntity<?> getLastQuizResultByUserAndQuiz(@RequestParam Long quizId ) {
+        return quizResultService.getLastQuizResultByUserAndQuiz(quizId);
+        // return new ResponseEntity<>(quizResultService.getLastQuizResultByUserAndQuiz(quizId), HttpStatus.OK);
+    }
+    
 }

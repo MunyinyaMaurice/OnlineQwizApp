@@ -36,6 +36,10 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user")
     @JsonIgnore
     private List<QuizResult> quizResults;
+
+    @OneToMany(mappedBy = "user")
+    @JsonIgnore
+    private List<Marks> marks;
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return role.getAuthorities();
