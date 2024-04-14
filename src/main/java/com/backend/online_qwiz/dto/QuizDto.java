@@ -14,8 +14,8 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class QuizDto {
-    @Valid
     @NotNull
     private String title;
 
+    private List<QuizQuestionDto> questions; 
 }

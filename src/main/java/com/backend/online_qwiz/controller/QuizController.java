@@ -16,7 +16,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v2/auth")
+@RequestMapping("/api/v2/auth/quiz")
 public class QuizController {
     private final QuizService quizService;
     @PostMapping
@@ -39,7 +39,7 @@ public class QuizController {
     @DeleteMapping("/{quizId}")
     public ResponseEntity<Void> deleteQuiz(@PathVariable Long quizId) {
         quizService.deleteQuiz(quizId);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return ResponseEntity.noContent().build(); // Return 204 No Content on successful deletion
     }
 
     @GetMapping("/all_quiz")

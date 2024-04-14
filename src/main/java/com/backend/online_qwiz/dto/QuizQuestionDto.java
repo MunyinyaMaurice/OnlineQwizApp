@@ -18,8 +18,8 @@ import java.util.List;
 @AllArgsConstructor
 public class QuizQuestionDto {
     @Valid
-    // @NotNull
-    // private Long quizId;
+    @NotNull
+    private Long id;
 
     @NotNull
     private String questionText;

@@ -43,6 +43,7 @@ public class QuizQuestionService {
         });
         return quizzes;
     }
+    
     public QuizQuestion updateQuizQuestion(Long questionId, QuizQuestionDto quizQuestionDto) {
         QuizQuestion existingQuestion = quizQuestionRepository.findById(questionId)
                 .orElseThrow(() -> new EntityNotFoundException("Quiz question not found with ID: " + questionId));
