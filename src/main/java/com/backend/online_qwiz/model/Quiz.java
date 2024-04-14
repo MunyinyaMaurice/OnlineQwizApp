@@ -19,6 +19,6 @@ public class Quiz {
     private String title;
 
     @OneToMany(mappedBy = "quiz")
-    @JsonIgnore
+    // @JsonIgnore
     private List<QuizQuestion> questions;
 }

@@ -1,11 +1,4 @@
 package com.backend.online_qwiz.dto;
-
-
-import com.backend.online_qwiz.model.Quiz;
-import jakarta.persistence.CollectionTable;
-import jakarta.persistence.Column;
-import jakarta.persistence.ElementCollection;
-import jakarta.persistence.JoinColumn;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -16,10 +9,12 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class QuizQuestionDto {
+public class QuizListDto {
     @Valid
-    // @NotNull
-    // private Long quizId;
+    @NotNull
+    private Long quizId;
+    @NotNull
+    private String quizTitle;
 
     @NotNull
     private String questionText;
@@ -27,4 +22,5 @@ public class QuizQuestionDto {
     private List<String> options;
     @NotNull
     private int correctOptionIndex;
+
 }

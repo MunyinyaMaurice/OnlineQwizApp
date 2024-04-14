@@ -1,5 +1,6 @@
 package com.backend.online_qwiz.service;
 
+import com.backend.online_qwiz.dto.QuizListDto;
 import com.backend.online_qwiz.dto.QuizQuestionDto;
 import com.backend.online_qwiz.model.Quiz;
 import com.backend.online_qwiz.model.QuizQuestion;
@@ -7,18 +8,26 @@ import com.backend.online_qwiz.repository.QuizQuestionRepository;
 import com.backend.online_qwiz.repository.QuizRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
 public class QuizQuestionService {
     private final QuizQuestionRepository quizQuestionRepository;
     private final QuizRepository quizRepository;
+    private final QuizService quizService;
 
 
-    public QuizQuestion createQuizQuestion(QuizQuestionDto quizQuestionDto, Quiz quiz) {
+    public QuizQuestion createQuizQuestion(Long quizId, QuizQuestionDto quizQuestionDto) {
+
+        Quiz quiz = quizService.getQuizById(quizId);
+                
         QuizQuestion quizQuestion = new QuizQuestion();
         quizQuestion.setQuestionText(quizQuestionDto.getQuestionText());
         quizQuestion.setOptions(quizQuestionDto.getOptions());
@@ -26,7 +35,14 @@ public class QuizQuestionService {
         quizQuestion.setQuiz(quiz);
         return quizQuestionRepository.save(quizQuestion);
     }
-
+    public List<Quiz> getAllQuizzesWithQuestionsAndOptions() {
+        List<Quiz> quizzes = quizRepository.findAll();
+        // Ensure questions and options are loaded eagerly to avoid lazy loading issues
+        quizzes.forEach(quiz -> {
+            quiz.getQuestions().size(); // Trigger eager loading of questions
+        });
+        return quizzes;
+    }
     public QuizQuestion updateQuizQuestion(Long questionId, QuizQuestionDto quizQuestionDto) {
         QuizQuestion existingQuestion = quizQuestionRepository.findById(questionId)
                 .orElseThrow(() -> new EntityNotFoundException("Quiz question not found with ID: " + questionId));

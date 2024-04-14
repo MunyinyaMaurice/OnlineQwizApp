@@ -19,11 +19,16 @@ public class QuizQuestionController {
         private final QuizQuestionService quizQuestionService;
         private final QuizService quizService;
 
+        @GetMapping("/with-questions")
+        public List<Quiz> getAllQuizzesWithQuestionsAndOptions() {
+            return quizQuestionService.getAllQuizzesWithQuestionsAndOptions();
+        }
+
         @PostMapping("/{quizId}")
         public ResponseEntity<QuizQuestion> createQuizQuestion(@PathVariable Long quizId, @RequestBody QuizQuestionDto quizQuestionDto) {
             // Assuming you have a service method to fetch the quiz by ID
-            Quiz quiz = quizService.getQuizById(quizId);
-            QuizQuestion createdQuestion = quizQuestionService.createQuizQuestion(quizQuestionDto, quiz);
+            // Quiz quiz = quizService.getQuizById(quizId);
+            QuizQuestion createdQuestion = quizQuestionService.createQuizQuestion(quizId, quizQuestionDto);
             return new ResponseEntity<>(createdQuestion, HttpStatus.CREATED);
         }
 

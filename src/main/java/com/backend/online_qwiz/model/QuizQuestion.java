@@ -27,7 +27,7 @@ public class QuizQuestion {
     @ElementCollection
     @CollectionTable(name = "question_options", joinColumns = @JoinColumn(name = "question_id"))
     @Column(name = "option")
-    @JsonIgnore
+    // @JsonIgnore
     private List<String> options;
 
     @Column(nullable = false)
