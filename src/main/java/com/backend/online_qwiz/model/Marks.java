@@ -22,6 +22,7 @@ public class Marks {
     @ManyToOne
     @JoinColumn(name = "quiz_id")
     @JsonIgnore
+    
     private Quiz quiz;
 
     private int marks;

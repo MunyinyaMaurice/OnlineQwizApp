@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -69,42 +70,60 @@ public class SecurityConfiguration {
         };
     }
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http, AccessDeniedHandler accessDeniedHandler) throws Exception {
-        http.csrf().disable()
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, AccessDeniedHandler accessDeniedHandler, ClientRegistrationRepository clientRegistrationRepository) throws Exception {
+        http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(req -> req
 //                        .requestMatchers(WHITE_LIST_URL)
-                .requestMatchers("/api/v1/auth/**","/api/v2/questions/**","/api/v2/auth/**", "/v2/api-docs",
-                "/api/v2/auth/questions/{quizId}",
-                "/api/v2/auth/submit/{quizId}",
-                "/api/v2/auth/quiz-results/result/{quizId}",
-                "/api/v2/auth/end/{quizId}",
-                "/v3/api-docs",
-                "/v3/api-docs/**",
-                "/swagger-resources",
-                "/swagger-resources/**",
-                "/configuration/ui",
-                "/configuration/security",
-                "/swagger-ui/**",
-                "/webjars/**",
-                "/swagger-ui.html")
+                        .requestMatchers("/api/v1/auth/**", "/api/v2/questions/**", 
+                        "/api/v2/auth/**", 
+                        "/api/v2/auth/submit/{quizId}",
+                        "/v2/api-docs",
+                                "/oauth2/authorization/google",
+                                "https://accounts.google.com/o/oauth2/auth",
+                                "https://accounts.google.com/signin/oauth",
+                                "http://localhost:23901/login/oauth2/code/google",
+                                "https://oauth2.googleapis.com/token",
+                                "https://openidconnect.googleapis.com/v1/userinfo",
+                                "/api/v2/auth/questions/{quizId}",
+                                "/api/v2/auth/submit/{quizId}",
+                                "/api/v2/auth/quiz-results/result/{quizId}",
+                                "/api/v2/auth/end/{quizId}",
+                                "/v3/api-docs",
+                                "/v3/api-docs/**",
+                                "/swagger-resources",
+                                "/swagger-resources/**",
+                                "/configuration/ui",
+                                "/configuration/security",
+                                "/swagger-ui/**",
+                                "/webjars/**",
+                                "/swagger-ui.html")
                         .permitAll()
 //                        .requestMatchers(LIST_FOR_LOGGED_IN_URL).hasAnyRole(ADMIN.name(), STUDENT.name(), STUDENT.name())
 //                        .requestMatchers(ADMIN_SELLER_LIST_URL).hasAnyRole(ADMIN.name(), STUDENT.name())
 //                        .requestMatchers(ADMIN_LIST_URL).hasRole(ADMIN.name())
                         .anyRequest()
                         .authenticated())
+                        .oauth2Login(oauth2Login ->
+                        oauth2Login
+                                .authorizationEndpoint(authorizationEndpoint ->
+                                        authorizationEndpoint.baseUri("/oauth2/authorize"))
+                                .redirectionEndpoint(redirectionEndpoint ->
+                                        redirectionEndpoint.baseUri("/oauth2/callback"))
+                                .clientRegistrationRepository(clientRegistrationRepository)
+                        )
                 .exceptionHandling(exceptions -> exceptions
-                .accessDeniedHandler(accessDeniedHandler)
-        )
+                                .accessDeniedHandler(accessDeniedHandler)
+                )
 
                 .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
 
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
                 .logout(logout -> logout.logoutUrl("/api/v1/auth/logout")
-                .addLogoutHandler(logoutHandler)
-                .logoutSuccessHandler((request, response, authentication) -> SecurityContextHolder.clearContext())
+                                .addLogoutHandler(logoutHandler)
+                                .logoutSuccessHandler((request, response, authentication) -> SecurityContextHolder.clearContext())
                 );
         return http.build();
     }
+
 }

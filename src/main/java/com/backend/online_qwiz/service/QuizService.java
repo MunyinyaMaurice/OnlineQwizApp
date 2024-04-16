@@ -44,6 +44,7 @@ public class QuizService {
         Quiz existingQuiz = quizRepository.findById(quizId)
                 .orElseThrow(() -> new EntityNotFoundException("Quiz not found with id: " + quizId));
 
+
         // Update the title of the quiz
         existingQuiz.setTitle(quizDto.getTitle());
 

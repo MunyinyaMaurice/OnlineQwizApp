@@ -18,7 +18,15 @@ public class Quiz {
     @Column(nullable = false)
     private String title;
 
-    @OneToMany(mappedBy = "quiz")
+    @OneToMany(mappedBy = "quiz", cascade = CascadeType.ALL, orphanRemoval = true)
     // @JsonIgnore
     private List<QuizQuestion> questions;
+
+    @OneToMany(mappedBy = "quiz", cascade = CascadeType.ALL, orphanRemoval = true)
+    // @JsonIgnore
+    private List<Marks> marks;
+
+    @OneToMany(mappedBy = "quiz", cascade = CascadeType.ALL, orphanRemoval = true)
+    // @JsonIgnore
+    private List<QuizResult> results;
 }

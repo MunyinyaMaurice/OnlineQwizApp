@@ -34,6 +34,7 @@ public class QuizTakingServiceImpl implements QuizTakingServiceInterf {
             List<String> options = quizQuestionService.getQuestionOptions(currentQuestion.getId());
 
             Map<String, Object> questionData = new HashMap<>();
+            questionData.put("questionId",currentQuestion.getId());
             questionData.put("question", currentQuestion.getQuestionText());
             questionData.put("options", options);
 

@@ -50,6 +50,7 @@ public class AuthenticationService {
         return AuthenticationResponse.builder()
                 .accessToken(jwtToken)
                 .refreshToken(refreshToken)
+                .role(sevedUser.getRole().name())
                 .build();
     }
 
@@ -87,6 +88,7 @@ public class AuthenticationService {
         return AuthenticationResponse.builder()
                 .accessToken(jwtToken)
                 .refreshToken(refreshToken)
+                .role(user.getRole().name())
                 .build();
     }
     private void revokeAllUserTokens(User user) {

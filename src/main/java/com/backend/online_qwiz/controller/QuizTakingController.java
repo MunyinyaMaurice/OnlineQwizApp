@@ -29,11 +29,6 @@ import java.util.Map;
 public class QuizTakingController {
     private final QuizTakingServiceImpl quizTakingServiceImpl;
     private final QuizQuestionService quizQuestionService;
-    private final  QuizService quizService ;
-    private final QuizResultService quizResultService;
-    private final QuizQuestionRepository quizQuestionRepository;
-    private final QuizRepository quizRepository;
-    private final MarksRepository marksRepository;
     @GetMapping("/options/{questionId}")
     public ResponseEntity<List<String>> getQuestionOptions(@PathVariable Long questionId) {
         List<String> options = quizQuestionService.getQuestionOptions(questionId);
@@ -60,63 +55,63 @@ public class QuizTakingController {
             return quizTakingServiceImpl.endQuiz(quizId, submissionData);
             }
 
-    @PostMapping("/end/{quizId}")
-    public ResponseEntity<?> endQuiz(
-            @PathVariable Long quizId,
-            @RequestBody Map<String, String> submissionData) {
-
-        try {
-            // Process each submitted answer
-            int totalScore = 0;
-
-            for (Map.Entry<String, String> entry : submissionData.entrySet()) {
-                Long questionId = Long.parseLong(entry.getKey());
-                String selectedOption = entry.getValue();
-
-                // Retrieve the QuizQuestion associated with the questionId
-                QuizQuestion question = quizQuestionRepository.findById(questionId)
-                        .orElseThrow(() -> new EntityNotFoundException("Quiz question not found with ID: " + questionId));
-
-                // Check if the selected option matches the correct option
-                if (selectedOption.equals(question.getOptions().get(question.getCorrectOptionIndex()))) {
-                    // Increment the total score if the selected option is correct
-                    totalScore++;
-                }
-            }
-
-            // Save the quiz result with the calculated score
-            Marks marks = Marks.builder()
-                    .quiz(quizRepository.findById(quizId).orElseThrow(() -> new EntityNotFoundException("Quiz not found with ID: " + quizId)))
-                    .user(getCurrentUser())
-                    .marks(totalScore)
-                    .build();
-            marksRepository.save(marks);
-
-          // Return the total score as a JSON response
-          return ResponseEntity.ok(Map.of("totalScore", totalScore));
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Failed to process quiz answers. Error: " + e.getMessage());
-        }
-    }
-
-    // @PostMapping("/result/{quizId}")
-    // public ResponseEntity<?> quizResult(
+    // @PostMapping("/end/{quizId}")
+    // public ResponseEntity<?> endQuiz(
     //         @PathVariable Long quizId,
-    //         @RequestBody Map<Long, String> answeredQuestions) {
+    //         @RequestBody Map<String, String> submissionData) {
 
-    //     // Calculate the score
-    //     int score = quizResultService.calculateScore(answeredQuestions);
+    //     try {
+    //         // Process each submitted answer
+    //         int totalScore = 0;
 
-    //     // Store the quiz result
-    //     quizResultService.submitQuizResult(quizId, answeredQuestions);
+    //         for (Map.Entry<String, String> entry : submissionData.entrySet()) {
+    //             Long questionId = Long.parseLong(entry.getKey());
+    //             String selectedOption = entry.getValue();
 
-    //     // Construct the JSON response
-    //     Map<String, Object> responseBody = Map.of(
-    //         "quizId", quizId,
-    //         "score", score
-    //                 );
+    //             // Retrieve the QuizQuestion associated with the questionId
+    //             QuizQuestion question = quizQuestionRepository.findById(questionId)
+    //                     .orElseThrow(() -> new EntityNotFoundException("Quiz question not found with ID: " + questionId));
 
-    //     return ResponseEntity.ok(responseBody);
+    //             // Check if the selected option matches the correct option
+    //             if (selectedOption.equals(question.getOptions().get(question.getCorrectOptionIndex()))) {
+    //                 // Increment the total score if the selected option is correct
+    //                 totalScore++;
+    //             }
+    //         }
+
+    //         // Save the quiz result with the calculated score
+    //         Marks marks = Marks.builder()
+    //                 .quiz(quizRepository.findById(quizId).orElseThrow(() -> new EntityNotFoundException("Quiz not found with ID: " + quizId)))
+    //                 .user(getCurrentUser())
+    //                 .marks(totalScore)
+    //                 .build();
+    //         marksRepository.save(marks);
+
+    //       // Return the total score as a JSON response
+    //       return ResponseEntity.ok(Map.of("totalScore", totalScore));
+    //     } catch (Exception e) {
+    //         return ResponseEntity.badRequest().body("Failed to process quiz answers. Error: " + e.getMessage());
+    //     }
     // }
+
+    // // @PostMapping("/result/{quizId}")
+    // // public ResponseEntity<?> quizResult(
+    // //         @PathVariable Long quizId,
+    // //         @RequestBody Map<Long, String> answeredQuestions) {
+
+    // //     // Calculate the score
+    // //     int score = quizResultService.calculateScore(answeredQuestions);
+
+    // //     // Store the quiz result
+    // //     quizResultService.submitQuizResult(quizId, answeredQuestions);
+
+    // //     // Construct the JSON response
+    // //     Map<String, Object> responseBody = Map.of(
+    // //         "quizId", quizId,
+    // //         "score", score
+    // //                 );
+
+    // //     return ResponseEntity.ok(responseBody);
+    // // }
 }
 

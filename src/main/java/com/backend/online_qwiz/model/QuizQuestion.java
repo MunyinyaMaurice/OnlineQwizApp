@@ -33,7 +33,7 @@ public class QuizQuestion {
     @Column(nullable = false)
     private int correctOptionIndex;
 
-    @OneToMany(mappedBy = "quizQuestion")
+    @OneToMany(mappedBy = "quizQuestion", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<QuizResult> quizResults;
 
